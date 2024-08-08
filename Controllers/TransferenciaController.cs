@@ -31,7 +31,7 @@ namespace Finances_Control_App_API.Controllers
                 x.SetProperty(b => b.DsTransferencia, parametros.DsTransferencia)
                 .SetProperty(b => b.DtTransferencia, parametros.DtTransferencia)
                 .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia)
-                .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia));
+                .SetProperty(b => b.IdCategoria, parametros.IdCategoria));
 
         }
 
