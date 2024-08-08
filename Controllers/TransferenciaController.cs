@@ -1,6 +1,7 @@
 ﻿using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App_API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Finances_Control_App_API.Controllers
 {
@@ -18,18 +19,20 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("AtualizaTransferencia")]
-        public async Task<ActionResult> AtualizaTransferencia([FromBody] TransferenciaDTO parametros)
+        public async Task<dynamic> AtualizaTransferencia([FromBody] TransferenciaDTO parametros)
         {
             if (parametros.IdTransferencia == null)
             {
                 return BadRequest();
             }
 
-            _context.Transferencia.Where(x => x.IdCliente == editarSituacaoDTO.idCliente &&
-                            x.IdCotacao == editarSituacaoDTO.IdCotacao &&
-                            x.IdSeguradora == editarSituacaoDTO.IdSeguradora &&
-                            x.IdSucursal == editarSituacaoDTO.IdSucursal)
-                .ExecuteUpdateAsync(x => x.SetProperty(b => b.Sit
+            return _context.Transferencia.Where(x => x.IdTransferencia == parametros.IdTransferencia).
+                ExecuteUpdateAsync(x =>
+                x.SetProperty(b => b.DsTransferencia, parametros.DsTransferencia)
+                .SetProperty(b => b.DtTransferencia, parametros.DtTransferencia)
+                .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia)
+                .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia));
+
         }
 
 
