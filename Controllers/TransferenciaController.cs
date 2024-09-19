@@ -13,29 +13,75 @@ namespace Finances_Control_App_API.Controllers
 
 
         [HttpGet("GetAll")]
-        public async Task<IQueryable<Transferencia>> GetAll()
+        public async Task<IEnumerable<Transferencia>> GetAll()
         {
-            return _context.Transferencia.AsQueryable();
+            return _context.Transferencia.AsEnumerable();
         }
 
         [HttpPost("AtualizaTransferencia")]
-        public async Task<dynamic> AtualizaTransferencia([FromBody] TransferenciaDTO parametros)
+        public async Task<IActionResult> AtualizaTransferencia([FromBody] TransferenciaDTO parametros)
         {
-            if (parametros.IdTransferencia == null)
+            try
             {
-                return BadRequest();
+                if (parametros.IdTransferencia == null)
+                {
+                    return BadRequest("O Id da transferência não pode ser nulo.");
+                }
+
+                await _context.Transferencia.Where(x => x.IdTransferencia == parametros.IdTransferencia).
+                    ExecuteUpdateAsync(x =>
+                    x.SetProperty(b => b.DsTransferencia, parametros.DsTransferencia)
+                    .SetProperty(b => b.DtTransferencia, parametros.DtTransferencia)
+                    .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia)
+                    .SetProperty(b => b.IdCategoria, parametros.IdCategoria));
+
+                return Ok(_context.SaveChanges());
+
             }
-
-            return _context.Transferencia.Where(x => x.IdTransferencia == parametros.IdTransferencia).
-                ExecuteUpdateAsync(x =>
-                x.SetProperty(b => b.DsTransferencia, parametros.DsTransferencia)
-                .SetProperty(b => b.DtTransferencia, parametros.DtTransferencia)
-                .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia)
-                .SetProperty(b => b.IdCategoria, parametros.IdCategoria));
-
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
+        [HttpDelete("ExcluirTransferencia")]
+        public async Task<IActionResult> ExcluirTransferencia([FromQuery] int IdTransferencia)
+        {
+            try
+            {
+                var retorno = await _context.Transferencia.Where(x => x.IdTransferencia == IdTransferencia).FirstOrDefaultAsync();
 
+                if (retorno == null)
+                {
+                    return BadRequest("Transferência não encontrada.");
+                }
+
+                _context.Transferencia.Remove(retorno);
+
+                return Ok(await _context.SaveChangesAsync());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("InserirTransferencia")]
+        public async Task<IActionResult> InserirTransferencia([FromBody] Transferencia parametros)
+        {
+            try
+            {
+                _context.Transferencia.Add(parametros);
+
+                return Ok(await _context.SaveChangesAsync());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }
