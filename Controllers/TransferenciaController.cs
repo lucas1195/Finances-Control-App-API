@@ -15,7 +15,7 @@ namespace Finances_Control_App_API.Controllers
         [HttpGet("GetAll")]
         public async Task<IEnumerable<Transferencia>> GetAll()
         {
-            return _context.Transferencia.AsEnumerable();
+            return await _context.Transferencia.ToListAsync();
         }
 
         [HttpPost("AtualizaTransferencia")]
