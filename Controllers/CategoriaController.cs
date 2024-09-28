@@ -18,6 +18,7 @@ namespace Finances_Control_App_API.Controllers
             return await _context.Categoria.ToListAsync();
         }
 
+
         [HttpPost("InserirCategoria")]
         public async Task<IActionResult> InserirCategoria([FromBody] CategoriaDTO parametros)
         {

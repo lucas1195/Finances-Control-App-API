@@ -12,6 +12,7 @@ builder.Services.AddDbContext<Contexto>
     (options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Finances-Control-App-API")));
 
 builder.Services.AddScoped<DashBoardService>();
+builder.Services.AddScoped<TransferenciaService>();
 
 // Add services to the container.
 builder.Services.AddCors(options =>
