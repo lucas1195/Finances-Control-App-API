@@ -1,4 +1,4 @@
-﻿namespace Finances_Control_App_API.Models
+﻿namespace Finances_Control_App_API.Models.DTO
 {
     public class TransferenciaDTO
     {
@@ -9,6 +9,10 @@
 
         public DateTime? DtTransferencia { get; set; }
 
-        public int? IdCategoria { get; set; }
+        public int IdCategoria { get; set; }
+
+        public int IdConta { get; set; }
+
+        public int IdUsuario { get; set; }
     }
 }

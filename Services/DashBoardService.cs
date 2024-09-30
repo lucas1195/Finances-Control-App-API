@@ -1,7 +1,9 @@
-﻿using Finances_Control_App.Domain.FinancesApp;
+﻿using Dapper;
+using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App_API.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Finances_Control_App_API.Services
 {
@@ -42,7 +44,14 @@ namespace Finances_Control_App_API.Services
                 query += " AND T.DtTransferencia >= DATEADD(MONTH, -6, GETDATE())";
             }
 
-            return  _context.Transferencia.FromSqlRaw(query);
+            else if (filter.FilterType == "Last12Months")
+            {
+                query += " AND T.DtTransferencia >= DATEADD(MONTH, -12, GETDATE())";
+            }
+
+            using var connection = _context.Database.GetDbConnection();
+
+            return await connection.QueryAsync<Transferencia>(query, new { filter.IdUsuario, filter.IdConta, filter.FilterType });
         }
 
         public async Task<IEnumerable<GetCategoriesAnalyticsReturn>> GetCategoriesAnalytics(GetCategoriesAnalyticsParams filer)
@@ -53,7 +62,8 @@ namespace Finances_Control_App_API.Services
                                 group t by c.NmCategoria into g
                                 select new GetCategoriesAnalyticsReturn
                                 {
-                                    TotalTransferencias = g.Count()
+                                    TotalTransferencias = g.Count(),
+                                    NmCategoria = g.Key
 
                                 }).ToListAsync();
 

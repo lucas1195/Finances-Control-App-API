@@ -1,5 +1,5 @@
 ﻿using Finances_Control_App.Domain.FinancesApp;
-using Finances_Control_App_API.Models;
+using Finances_Control_App_API.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
