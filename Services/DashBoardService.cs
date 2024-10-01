@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App_API.Models;
+using Finances_Control_App_API.Models.DTO;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -16,7 +18,7 @@ namespace Finances_Control_App_API.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Transferencia>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
+        public async Task<IEnumerable<TransferenciaDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
         {
             var query = $@"SELECT  T.IdTransferencia,
                 T.IdUsuario,
@@ -51,7 +53,7 @@ namespace Finances_Control_App_API.Services
 
             using var connection = _context.Database.GetDbConnection();
 
-            return await connection.QueryAsync<Transferencia>(query, new { filter.IdUsuario, filter.IdConta, filter.FilterType });
+            return await connection.QueryAsync<TransferenciaDTO>(query, new { filter.IdUsuario, filter.IdConta, filter.FilterType });
         }
 
         public async Task<IEnumerable<GetCategoriesAnalyticsReturn>> GetCategoriesAnalytics(GetCategoriesAnalyticsParams filer)
@@ -70,5 +72,23 @@ namespace Finances_Control_App_API.Services
             return result;
         }
 
+        public async Task<IEnumerable<TransferenciaDTO>> GetLatest(int IdUsuario, int IdConta)
+        {
+
+            return await _context.Transferencia
+                          .Where(t => t.IdUsuario == IdUsuario && t.IdConta == IdConta)
+                          .Select(t => new TransferenciaDTO
+                          {
+                              IdTransferencia = t.IdTransferencia,
+                              IdConta = t.IdConta,
+                              IdUsuario = t.IdUsuario,
+                              DsTransferencia = t.DsTransferencia,
+                              DtTransferencia = t.DtTransferencia,
+                              VlTransferencia = t.VlTransferencia,
+                              IdCategoria = t.IdCategoria
+                          })
+                          .Take(3)
+                          .ToListAsync();
+        }
     }
 }
