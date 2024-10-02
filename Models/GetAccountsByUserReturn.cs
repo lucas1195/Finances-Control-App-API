@@ -8,7 +8,7 @@
         public string NmAgencia { get; set; }
         public int NumConta { get; set; }
         public double Saldo { get; set; }
-        public int? IdAccontFlag { get; set; }
+        public int? IdAccountFlag { get; set; }
         public string? NmAccountFlag { get; set; }
     }
 }
