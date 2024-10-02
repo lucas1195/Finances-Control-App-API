@@ -8,9 +8,8 @@ namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DashBoardController(Contexto context, DashBoardService dashBoardService) : ControllerBase
+    public class DashBoardController(DashBoardService dashBoardService) : ControllerBase
     {
-        private readonly Contexto _context = context;
         private readonly DashBoardService _dashboardService = dashBoardService;
 
 
@@ -27,10 +26,15 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetLatest")]
-        public async Task<IEnumerable<TransferenciaDTO>> GetLatest([FromQuery] int IdUsuario, [FromQuery] int IdConta)
+        public async Task<IEnumerable<TransferenciaDTO>> GetLatest([FromQuery] GetLatestParams parametros)
         {
-            return await _dashboardService.GetLatest(IdUsuario, IdConta);
+            return await _dashboardService.GetLatest(parametros);
         }
 
+        [HttpGet("GetAnalyticsByMonth")]
+        public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth([FromQuery] int IdUsuario, [FromQuery] int IdConta)
+        {
+            return await _dashboardService.GetAnalyticsByMonth(IdUsuario, IdConta);
+        }
     }
 }

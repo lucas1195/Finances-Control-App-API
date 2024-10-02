@@ -13,6 +13,7 @@ builder.Services.AddDbContext<Contexto>
 
 builder.Services.AddScoped<DashBoardService>();
 builder.Services.AddScoped<TransferenciaService>();
+builder.Services.AddScoped<AccountService>();
 
 // Add services to the container.
 builder.Services.AddCors(options =>

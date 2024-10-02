@@ -48,10 +48,15 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("AtualizaTransferencia")]
-        public async Task<IActionResult> AtualizaTransferencia([FromBody] TransferenciaDTO parametros)
+        public async Task<IActionResult> AtualizaTransferencia([FromBody] Transferencia parametros)
         {
             try
             {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
                 return Ok(await _transferenciaService.AtualizaTransferencia(parametros));
 
@@ -86,17 +91,18 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("InserirTransferencia")]
-        public async Task<IActionResult> InserirTransferencia([FromBody] TransferenciaDTO parametros)
+        public async Task<IActionResult> InserirTransferencia([FromBody] Transferencia parametros)
         {
             try
             {
 
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);    
+                }
+
                 return Ok(await _transferenciaService.InserirTransferencia(parametros));
 
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

@@ -6,17 +6,13 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Finances_Control_App_API.Services
 {
-    public class DashBoardService
+    public class DashBoardService(Contexto context)
     {
-        private readonly Contexto _context;
-
-        public DashBoardService(Contexto context)
-        {
-            _context = context;
-        }
+        private readonly Contexto _context = context;
 
         public async Task<IEnumerable<TransferenciaDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
         {
@@ -56,6 +52,26 @@ namespace Finances_Control_App_API.Services
             return await connection.QueryAsync<TransferenciaDTO>(query, new { filter.IdUsuario, filter.IdConta, filter.FilterType });
         }
 
+        public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth(int IdUsuario, int IdConta)
+        {
+
+            var query = $@"SELECT 
+                            YEAR(T.DtTransferencia) AS Ano, 
+                            MONTH(T.DtTransferencia) AS Mes, 
+                            SUM(T.VlTransferencia) AS SomatorioValores
+                        FROM Transferencia T
+                        JOIN Conta C ON T.IdConta = C.IdConta
+                        WHERE T.IdUsuario = {IdUsuario} 
+                        AND T.IdConta = {IdConta}
+                        GROUP BY YEAR(T.DtTransferencia), MONTH(T.DtTransferencia)
+                        ORDER BY YEAR(T.DtTransferencia), MONTH(T.DtTransferencia)";
+
+            using var connection = _context.Database.GetDbConnection();
+
+            return await connection.QueryAsync<GetAnalyticsByMonthReturn>(query, new { IdUsuario, IdConta });
+
+        }        
+
         public async Task<IEnumerable<GetCategoriesAnalyticsReturn>> GetCategoriesAnalytics(GetCategoriesAnalyticsParams filer)
         {
             var result = await (from t in _context.Transferencia
@@ -72,11 +88,11 @@ namespace Finances_Control_App_API.Services
             return result;
         }
 
-        public async Task<IEnumerable<TransferenciaDTO>> GetLatest(int IdUsuario, int IdConta)
+        public async Task<IEnumerable<TransferenciaDTO>> GetLatest(GetLatestParams parametros)
         {
 
             return await _context.Transferencia
-                          .Where(t => t.IdUsuario == IdUsuario && t.IdConta == IdConta)
+                          .Where(t => t.IdUsuario == parametros.IdUsuario && t.IdConta == parametros.IdConta)
                           .Select(t => new TransferenciaDTO
                           {
                               IdTransferencia = t.IdTransferencia,
@@ -87,7 +103,7 @@ namespace Finances_Control_App_API.Services
                               VlTransferencia = t.VlTransferencia,
                               IdCategoria = t.IdCategoria
                           })
-                          .Take(3)
+                          .Take(parametros.Top)
                           .ToListAsync();
         }
     }

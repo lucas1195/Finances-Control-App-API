@@ -20,21 +20,16 @@ namespace Finances_Control_App_API.Controllers
 
 
         [HttpPost("InserirCategoria")]
-        public async Task<IActionResult> InserirCategoria([FromBody] CategoriaDTO parametros)
+        public async Task<IActionResult> InserirCategoria([FromBody] Categoria parametros)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(parametros.NmCategoria))
+                if (!ModelState.IsValid)
                 {
-                    return BadRequest("O nome da categoria não pode ser nulo ou vazio.");
+                    return BadRequest(ModelState);
                 }
 
-                Categoria categoria = new Categoria
-                {
-                    NmCategoria = parametros.NmCategoria
-                };
-
-                _context.Categoria.Add(categoria);
+                await _context.Categoria.AddAsync(parametros);
 
                 return Ok(await _context.SaveChangesAsync());
 
@@ -69,10 +64,16 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("AtualizaCategoria")]
-        public async Task<IActionResult> AtualizaCategoria([FromBody] CategoriaDTO parametros)
+        public async Task<IActionResult> AtualizaCategoria([FromBody] Categoria parametros)
         {
             try
             {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 if (parametros.IdCategoria == null)
                 {
                     return BadRequest("O Id da categoria não pode ser nulo.");
