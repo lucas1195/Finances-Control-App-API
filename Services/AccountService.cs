@@ -34,7 +34,7 @@ namespace Finances_Control_App_API.Services
         {
             var conta = _context.Conta.Where(x => x.IdConta == IdConta).FirstOrDefault();
 
-            if (conta != null)
+            if (conta == null)
             {
                 throw new InvalidOperationException($"Conta de Id {IdConta} não encontrada.");
             }
