@@ -7,20 +7,20 @@ namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController(Contexto context) : ControllerBase
+    public class CategoryController(Context context) : ControllerBase
     {
-        private readonly Contexto _context = context;
+        private readonly Context _context = context;
 
 
         [HttpGet("GetAll")]
-        public async Task<IEnumerable<Categoria>> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
-            return await _context.Categoria.ToListAsync();
+            return await _context.Category.ToListAsync();
         }
 
 
-        [HttpPost("InserirCategoria")]
-        public async Task<IActionResult> InserirCategoria([FromBody] Categoria parametros)
+        [HttpPost("InsertCategory")]
+        public async Task<IActionResult> InsertCategory([FromBody] Category categoryParam)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace Finances_Control_App_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _context.Categoria.AddAsync(parametros);
+                await _context.Category.AddAsync(categoryParam);
 
                 return Ok(await _context.SaveChangesAsync());
 
@@ -40,19 +40,19 @@ namespace Finances_Control_App_API.Controllers
             }
         }
 
-        [HttpDelete("ExcluirCategoria")]
-        public async Task<IActionResult> ExcluirCategoria([FromQuery] int IdCategoria)
+        [HttpDelete("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory([FromQuery] int CategoryId)
         {
             try
             {
-                var retorno = await _context.Categoria.Where(x => x.IdCategoria == IdCategoria).FirstOrDefaultAsync();
+                var retorno = await _context.Category.Where(x => x.CategoryId == CategoryId).FirstOrDefaultAsync();
 
                 if (retorno == null)
                 {
-                    return BadRequest("Categoria não encontrada.");
+                    return BadRequest($"Category with ID {CategoryId} was not found.");
                 }
 
-                _context.Categoria.Remove(retorno);
+                _context.Category.Remove(retorno);
 
                 return Ok(await _context.SaveChangesAsync());
 
@@ -63,8 +63,8 @@ namespace Finances_Control_App_API.Controllers
             }
         }
 
-        [HttpPost("AtualizaCategoria")]
-        public async Task<IActionResult> AtualizaCategoria([FromBody] Categoria parametros)
+        [HttpPost("UpdateCategory")]
+        public async Task<IActionResult> UpdateCategory([FromBody] Category categoryParams)
         {
             try
             {
@@ -74,14 +74,14 @@ namespace Finances_Control_App_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if (parametros.IdCategoria == null)
+                if (categoryParams.CategoryId == null)
                 {
-                    return BadRequest("O Id da categoria não pode ser nulo.");
+                    return BadRequest("Category ID cannot be null.");
                 }
 
-                await _context.Categoria.Where(x => x.IdCategoria == parametros.IdCategoria).
+                await _context.Category.Where(x => x.CategoryId == categoryParams.CategoryId).
                     ExecuteUpdateAsync(x =>
-                    x.SetProperty(b => b.NmCategoria, parametros.NmCategoria));
+                    x.SetProperty(b => b.CategoryName, categoryParams.CategoryName));
 
                 return Ok(_context.SaveChanges());
 

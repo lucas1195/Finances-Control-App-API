@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<Contexto>
+builder.Services.AddDbContext<Context>
     (options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Finances-Control-App-API")));
 
 builder.Services.AddScoped<DashBoardService>();

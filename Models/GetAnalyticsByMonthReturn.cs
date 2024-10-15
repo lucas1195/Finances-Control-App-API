@@ -2,8 +2,8 @@
 {
     public class GetAnalyticsByMonthReturn
     {
-        public int Ano { get; set; }
-        public int Mes { get; set; }
-        public decimal SomatorioValores { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

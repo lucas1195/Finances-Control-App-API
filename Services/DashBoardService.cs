@@ -10,41 +10,41 @@ using System.Linq;
 
 namespace Finances_Control_App_API.Services
 {
-    public class DashBoardService(Contexto context)
+    public class DashBoardService(Context context)
     {
-        private readonly Contexto _context = context;
+        private readonly Context _context = context;
 
         public async Task<IEnumerable<TransferenciaDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
         {
-            var query = $@"SELECT  T.IdTransferencia,
-                T.IdUsuario,
-                T.VlTransferencia, 
-                T.DsTransferencia, 
-                T.DtTransferencia, 
-                T.IdCategoria, 
-                T.IdConta
-                FROM Transferencia T
-                JOIN Conta C ON T.IdConta = C.IdConta
-                WHERE T.IdUsuario = {filter.IdUsuario} AND T.IdConta = {filter.IdConta}";
+            var query = $@"SELECT  T.TransferId,
+                T.UserId,
+                T.TransferAmount, 
+                T.TransferDescription, 
+                T.TransferDate, 
+                T.CategoryId, 
+                T.AccountId
+                FROM Transfer T
+                JOIN Account C ON T.AccountId = C.AccountId
+                WHERE T.UserId = @filter.IdUsuario AND T.AccountId = @filter.IdConta";
 
             if (filter.FilterType == "Last7Days")
             {
-                query += " AND T.DtTransferencia >= DATEADD(DAY, -7, GETDATE())";
+                query += " AND T.TransferDate >= DATEADD(DAY, -7, GETDATE())";
             }
 
             else if (filter.FilterType == "Last30Days")
             {
-                query += " AND T.DtTransferencia >= DATEADD(DAY, -30, GETDATE())";
+                query += " AND T.TransferDate >= DATEADD(DAY, -30, GETDATE())";
             }
 
             else if (filter.FilterType == "Last6Months")
             {
-                query += " AND T.DtTransferencia >= DATEADD(MONTH, -6, GETDATE())";
+                query += " AND T.TransferDate >= DATEADD(MONTH, -6, GETDATE())";
             }
 
             else if (filter.FilterType == "Last12Months")
             {
-                query += " AND T.DtTransferencia >= DATEADD(MONTH, -12, GETDATE())";
+                query += " AND T.TransferDate >= DATEADD(MONTH, -12, GETDATE())";
             }
 
             using var connection = _context.Database.GetDbConnection();
@@ -56,15 +56,15 @@ namespace Finances_Control_App_API.Services
         {
 
             var query = $@"SELECT 
-                            YEAR(T.DtTransferencia) AS Ano, 
-                            MONTH(T.DtTransferencia) AS Mes, 
-                            SUM(T.VlTransferencia) AS SomatorioValores
-                        FROM Transferencia T
-                        JOIN Conta C ON T.IdConta = C.IdConta
-                        WHERE T.IdUsuario = {IdUsuario} 
-                        AND T.IdConta = {IdConta}
-                        GROUP BY YEAR(T.DtTransferencia), MONTH(T.DtTransferencia)
-                        ORDER BY YEAR(T.DtTransferencia), MONTH(T.DtTransferencia)";
+                            YEAR(T.TransferDate) AS Year, 
+                            MONTH(T.TransferDate) AS Month, 
+                            SUM(T.TransferAmount) AS TotalAmount
+                        FROM Transfer T
+                        JOIN Account C ON T.AccountId = C.AccountId
+                        WHERE T.UserId = @IdUsuario 
+                        AND T.AccountId = @IdConta
+                        GROUP BY YEAR(T.TransferDate), MONTH(T.TransferDate)
+                        ORDER BY YEAR(T.TransferDate), MONTH(T.TransferDate)";
 
             using var connection = _context.Database.GetDbConnection();
 
@@ -74,10 +74,10 @@ namespace Finances_Control_App_API.Services
 
         public async Task<IEnumerable<GetCategoriesAnalyticsReturn>> GetCategoriesAnalytics(GetCategoriesAnalyticsParams filer)
         {
-            var result = await (from t in _context.Transferencia
-                                join c in _context.Categoria on t.IdCategoria equals c.IdCategoria
-                                where t.IdUsuario == filer.IdUsuario && t.IdConta == filer.IdConta
-                                group t by c.NmCategoria into g
+            var result = await (from t in _context.Transfer
+                                join c in _context.Category on t.CategoryId equals c.CategoryId
+                                where t.UserId == filer.IdUsuario && t.AccountId == filer.IdConta
+                                group t by c.CategoryName into g
                                 select new GetCategoriesAnalyticsReturn
                                 {
                                     TotalTransferencias = g.Count(),
@@ -91,17 +91,18 @@ namespace Finances_Control_App_API.Services
         public async Task<IEnumerable<TransferenciaDTO>> GetLatest(GetLatestParams parametros)
         {
 
-            return await _context.Transferencia
-                          .Where(t => t.IdUsuario == parametros.IdUsuario && t.IdConta == parametros.IdConta)
+            return await _context.Transfer
+                          .Where(t => t.UserId == parametros.IdUsuario && t.AccountId == parametros.IdConta)
                           .Select(t => new TransferenciaDTO
                           {
-                              IdTransferencia = t.IdTransferencia,
-                              IdConta = t.IdConta,
-                              IdUsuario = t.IdUsuario,
-                              DsTransferencia = t.DsTransferencia,
-                              DtTransferencia = t.DtTransferencia,
-                              VlTransferencia = t.VlTransferencia,
-                              IdCategoria = t.IdCategoria
+                              TransferId = t.TransferId,
+                              AccountId = t.AccountId,
+                              UserId = t.UserId,
+                              TransferDescription = t.TransferDescription,
+                              TransferDate = t.TransferDate,
+                              TransferAmount = t.TransferAmount,
+                              CategoryId = t.CategoryId
+
                           })
                           .Take(parametros.Top)
                           .ToListAsync();

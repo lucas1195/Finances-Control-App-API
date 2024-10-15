@@ -9,49 +9,50 @@ namespace Finances_Control_App_API.Services
 {
     public class TransferenciaService
     {
-        private readonly Contexto _context;
-        public TransferenciaService(Contexto context)
+        private readonly Context _context;
+        public TransferenciaService(Context context)
         {
             _context = context;
         }
 
         public async Task<IEnumerable<GetAllTransactiosByUserReturn>> GetAllTransactiosByUser(GetAllTransactiosByUserParams parametros)
         {
-            var query = $@"SELECT T.IdTransferencia,
-                                  T.VlTransferencia,
-                                  T.DsTransferencia,
-                                  T.DtTransferencia,
-                                  T.IdCategoria,
-                                  C.NmCategoria,
-                                  T.IdConta,
-                                  T.IdUsuario
-                           FROM Transferencia T
-                           JOIN Categoria C ON T.IdCategoria = C.IdCategoria
-                           WHERE T.IdUsuario = {parametros.IdUsuario} AND T.IdConta = {parametros.IdConta}";
+            var query = $@"SELECT T.TransferId,
+                      T.TransferAmount,
+                      T.TransferDescription,
+                      T.TransferDate,
+                      T.CategoryId,
+                      C.CategoryName,
+                      T.AccountId,
+                      T.UserId
+               FROM Transfer T
+               JOIN Category C ON T.CategoryId = C.CategoryId
+               WHERE T.UserId = {parametros.IdUsuario} AND T.AccountId = {parametros.IdConta}";
+
 
             using var connection = _context.Database.GetDbConnection();
 
             return await connection.QueryAsync<GetAllTransactiosByUserReturn>(query, new { parametros.IdUsuario, parametros.IdConta });
         }
 
-        public async Task<IEnumerable<Transferencia>> GetAll()
+        public async Task<IEnumerable<Transfer>> GetAll()
         {
-            return await _context.Transferencia.ToListAsync();
+            return await _context.Transfer.ToListAsync();
         }
 
-        public async Task<int> AtualizaTransferencia(Transferencia parametros)
+        public async Task<int> AtualizaTransferencia(Transfer parametros)
         {
-            if (parametros.IdTransferencia == null)
+            if (parametros.TransferId == null)
             {
-                throw new ArgumentNullException(nameof(parametros.IdTransferencia),"O Id da transferência não pode ser nulo.");
+                throw new ArgumentNullException(nameof(parametros.TransferId), "The transfer ID cannot be null.");
             }
 
-            await _context.Transferencia.Where(x => x.IdTransferencia == parametros.IdTransferencia).
-                    ExecuteUpdateAsync(x =>
-                    x.SetProperty(b => b.DsTransferencia, parametros.DsTransferencia)
-                    .SetProperty(b => b.DtTransferencia, parametros.DtTransferencia)
-                    .SetProperty(b => b.VlTransferencia, parametros.VlTransferencia)
-                    .SetProperty(b => b.IdCategoria, parametros.IdCategoria));
+            await _context.Transfer.Where(x => x.TransferId == parametros.TransferId)
+             .ExecuteUpdateAsync(x =>
+             x.SetProperty(b => b.TransferDescription, parametros.TransferDescription)
+              .SetProperty(b => b.TransferDate, parametros.TransferDate)
+              .SetProperty(b => b.TransferAmount, parametros.TransferAmount)
+              .SetProperty(b => b.CategoryId, parametros.CategoryId));
 
 
             return await _context.SaveChangesAsync();
@@ -59,18 +60,18 @@ namespace Finances_Control_App_API.Services
 
         public async Task<int> ExcluirTransferencia(int IdTransferencia)
         {
-            var retorno = await _context.Transferencia.
-                Where(x => x.IdTransferencia == IdTransferencia).FirstOrDefaultAsync() ?? throw new ArgumentNullException(nameof(IdTransferencia),"Transferência não encontrada.");
+            var retorno = await _context.Transfer.
+                Where(x => x.TransferId == IdTransferencia).FirstOrDefaultAsync() ?? throw new ArgumentNullException(nameof(IdTransferencia), "Transfer not found.");
 
-            _context.Transferencia.Remove(retorno);
+            _context.Transfer.Remove(retorno);
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> InserirTransferencia(Transferencia parametros)
+        public async Task<int> InserirTransferencia(Transfer parametros)
         {
 
-            await _context.Transferencia.AddAsync(parametros);
+            await _context.Transfer.AddAsync(parametros);
 
             return await _context.SaveChangesAsync();
         }

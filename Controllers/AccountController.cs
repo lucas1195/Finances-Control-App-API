@@ -12,7 +12,7 @@ namespace Finances_Control_App_API.Controllers
         private readonly AccountService _accountService = accountService;
 
         [HttpPost("InsertAccount")]
-        public async Task<IActionResult> InsertAccount([FromBody] Conta account)
+        public async Task<IActionResult> InsertAccount([FromBody] Account account)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("UpdateAccount")]
-        public async Task<IActionResult> UpdateAccount([FromBody] Conta account)
+        public async Task<IActionResult> UpdateAccount([FromBody] Account account)
         {
             try
             {

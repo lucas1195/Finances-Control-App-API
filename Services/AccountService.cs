@@ -3,67 +3,70 @@ using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App_API.Models;
 using Finances_Control_App_API.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace Finances_Control_App_API.Services
 {
-    public class AccountService(Contexto context)
+    public class AccountService(Context context)
     {
-        private readonly Contexto _context = context;
+        private readonly Context _context = context;
 
 
-        public async Task<int> InsertAccount(Conta account)
+        public async Task<int> InsertAccount(Account account)
         {
             await _context.AddAsync(account);
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAccount(Conta account)
+        public async Task<int> UpdateAccount(Account account)
         {
-            await _context.Conta.Where(x => x.IdConta == account.IdConta).
-                ExecuteUpdateAsync(x =>
-                x.SetProperty(c => c.NumConta, account.NumConta).
-                SetProperty(c => c.NmAgencia, account.NmAgencia).
-                SetProperty(c => c.IdAccountFlag, account.IdAccountFlag).
-                SetProperty(c => c.Saldo, account.Saldo));
+            await _context.Account.Where(x => x.AccountId == account.AccountId).
+                 ExecuteUpdateAsync(x =>
+                 x.SetProperty(c => c.AccountNumber, account.AccountNumber).
+                 SetProperty(c => c.AgencyNumber, account.AgencyNumber).
+                 SetProperty(c => c.AccountName, account.AccountName).
+                 SetProperty(c => c.InstitutionName, account.InstitutionName).
+                 SetProperty(c => c.AccountFlagId, account.AccountFlagId).
+                 SetProperty(c => c.Balance, account.Balance));             
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAccount(int IdConta)
+        public async Task<int> DeleteAccount(int accountId)
         {
-            var conta = _context.Conta.Where(x => x.IdConta == IdConta).FirstOrDefault();
+            var conta = _context.Account.Where(x => x.AccountId == accountId).FirstOrDefault();
 
             if (conta == null)
             {
-                throw new InvalidOperationException($"Conta de Id {IdConta} não encontrada.");
+                throw new InvalidOperationException($"Account with Id {accountId} not found.");
             }
 
-            _context.Conta.Remove(conta);
+            _context.Account.Remove(conta);
 
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser(int IdUsuario)
+        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser(int UserId)
         {
 
-            var query = $@"SELECT C.IdConta,
-                                  C.IdUsuario,
-                                  U.NmUsuario,
-                                  C.NmAgencia,
-                                  C.Saldo,
-                                  C.NumConta,
-                                  AF.IdAccountFlag,
-                                  AF.NmAccountFlag
-                           FROM Conta C
-                           INNER JOIN Usuario U ON C.IdUsuario = U.IdUsuario
-                           LEFT JOIN AccountFlag AF ON C.IdAccountFlag = AF.IdAccountFlag
-                           WHERE C.IdUsuario = {IdUsuario}";
+            var query = $@"SELECT C.AccountId,
+                          C.UserId,
+                          U.UserName,
+                          C.AgencyNumber,
+                          C.Balance,
+                          C.AccountNumber,
+                          AF.AccountFlagId,
+                          AF.AccountFlagName
+                   FROM Account C
+                   INNER JOIN User U ON C.UserId = U.UserId
+                   LEFT JOIN AccountFlag AF ON C.AccountFlagId = AF.AccountFlagId
+                   WHERE C.UserId = @UserId";
 
 
             using var connection = _context.Database.GetDbConnection();
 
-            return await connection.QueryAsync<GetAccountsByUserReturn>(query, new { IdUsuario });
+            return await connection.QueryAsync<GetAccountsByUserReturn>(query, new { UserId });
         }
 
 

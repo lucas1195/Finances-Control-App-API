@@ -11,17 +11,17 @@ namespace Finances_Control_App_API.Controllers
     [ApiController]
     public class TransferenciaController : ControllerBase
     {
-        private readonly Contexto _context;
+        private readonly Context _context;
         private readonly TransferenciaService _transferenciaService;
 
-        public TransferenciaController(Contexto context, TransferenciaService transferenciaService)
+        public TransferenciaController(Context context, TransferenciaService transferenciaService)
         {
             _context = context;
             _transferenciaService = transferenciaService;
         }
 
         [HttpGet("GetAll")]
-        public async Task<IEnumerable<Transferencia>> GetAll()
+        public async Task<IEnumerable<Transfer>> GetAll()
         {
             try
             {
@@ -34,8 +34,8 @@ namespace Finances_Control_App_API.Controllers
             }
         }
 
-        [HttpGet("GetAllTransactiosByUser")]
-        public async Task<IEnumerable<GetAllTransactiosByUserReturn>> GetAllTransactiosByUser([FromQuery] GetAllTransactiosByUserParams parametros)
+        [HttpGet("GetAllTranfersByUser")]
+        public async Task<IEnumerable<GetAllTransactiosByUserReturn>> GetAllTranfersByUser([FromQuery] GetAllTransactiosByUserParams parametros)
         {
             try
             {
@@ -47,8 +47,8 @@ namespace Finances_Control_App_API.Controllers
             }
         }
 
-        [HttpPost("AtualizaTransferencia")]
-        public async Task<IActionResult> AtualizaTransferencia([FromBody] Transferencia parametros)
+        [HttpPost("UpdateTransfer")]
+        public async Task<IActionResult> UpdateTransfer([FromBody] Transfer parametros)
         {
             try
             {
@@ -71,8 +71,8 @@ namespace Finances_Control_App_API.Controllers
             }
         }
 
-        [HttpDelete("ExcluirTransferencia")]
-        public async Task<IActionResult> ExcluirTransferencia([FromQuery] int IdTransferencia)
+        [HttpDelete("DeleteTransfer")]
+        public async Task<IActionResult> DeleteTransfer([FromQuery] int IdTransferencia)
         {
             try
             {
@@ -90,8 +90,8 @@ namespace Finances_Control_App_API.Controllers
             }
         }
 
-        [HttpPost("InserirTransferencia")]
-        public async Task<IActionResult> InserirTransferencia([FromBody] Transferencia parametros)
+        [HttpPost("InsertTransfer")]
+        public async Task<IActionResult> InsertTransfer([FromBody] Transfer parametros)
         {
             try
             {
