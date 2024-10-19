@@ -27,7 +27,7 @@ namespace Finances_Control_App_API.Services
                       T.UserId
                FROM Transfer T
                JOIN Category C ON T.CategoryId = C.CategoryId
-               WHERE T.UserId = {parametros.IdUsuario} AND T.AccountId = {parametros.IdConta}";
+               WHERE T.UserId = @parametros.IdUsuario AND T.AccountId = @parametros.IdConta";
 
 
             using var connection = _context.Database.GetDbConnection();
