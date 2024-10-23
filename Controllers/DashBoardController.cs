@@ -14,7 +14,7 @@ namespace Finances_Control_App_API.Controllers
 
 
         [HttpGet("GetByPeriod")]
-        public async Task<IEnumerable<TransferenciaDTO>> GetByPeriod([FromQuery] GetTransfersByPeriodParams filter)
+        public async Task<IEnumerable<TransferDTO>> GetByPeriod([FromQuery] GetTransfersByPeriodParams filter)
         {
             return await _dashboardService.GetTransfersByPeriod(filter);
         }
@@ -26,7 +26,7 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetLatest")]
-        public async Task<IEnumerable<TransferenciaDTO>> GetLatest([FromQuery] GetLatestParams parametros)
+        public async Task<IEnumerable<TransferDTO>> GetLatest([FromQuery] GetLatestParams parametros)
         {
             return await _dashboardService.GetLatest(parametros);
         }

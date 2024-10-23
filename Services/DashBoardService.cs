@@ -14,7 +14,7 @@ namespace Finances_Control_App_API.Services
     {
         private readonly Context _context = context;
 
-        public async Task<IEnumerable<TransferenciaDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
+        public async Task<IEnumerable<TransferDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
         {
             var query = $@"SELECT  T.TransferId,
                 T.UserId,
@@ -25,7 +25,7 @@ namespace Finances_Control_App_API.Services
                 T.AccountId
                 FROM Transfer T
                 JOIN Account C ON T.AccountId = C.AccountId
-                WHERE T.UserId = @filter.IdUsuario AND T.AccountId = @filter.IdConta";
+                WHERE T.UserId = @UserId AND T.AccountId = @AccountId";
 
             if (filter.FilterType == "Last7Days")
             {
@@ -49,7 +49,7 @@ namespace Finances_Control_App_API.Services
 
             using var connection = _context.Database.GetDbConnection();
 
-            return await connection.QueryAsync<TransferenciaDTO>(query, new { filter.IdUsuario, filter.IdConta, filter.FilterType });
+            return await connection.QueryAsync<TransferDTO>(query, new { filter.UserId, filter.AccountId });
         }
 
         public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth(int IdUsuario, int IdConta)
@@ -76,24 +76,24 @@ namespace Finances_Control_App_API.Services
         {
             var result = await (from t in _context.Transfer
                                 join c in _context.Category on t.CategoryId equals c.CategoryId
-                                where t.UserId == filer.IdUsuario && t.AccountId == filer.IdConta
+                                where t.UserId == filer.UserId && t.AccountId == filer.AccountId
                                 group t by c.CategoryName into g
                                 select new GetCategoriesAnalyticsReturn
                                 {
-                                    TotalTransferencias = g.Count(),
-                                    NmCategoria = g.Key
+                                    TransfersTotals = g.Count(),
+                                    CategoryName = g.Key
 
                                 }).ToListAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<TransferenciaDTO>> GetLatest(GetLatestParams parametros)
+        public async Task<IEnumerable<TransferDTO>> GetLatest(GetLatestParams parametros)
         {
 
             return await _context.Transfer
-                          .Where(t => t.UserId == parametros.IdUsuario && t.AccountId == parametros.IdConta)
-                          .Select(t => new TransferenciaDTO
+                          .Where(t => t.UserId == parametros.UserId && t.AccountId == parametros.AccountId)
+                          .Select(t => new TransferDTO
                           {
                               TransferId = t.TransferId,
                               AccountId = t.AccountId,

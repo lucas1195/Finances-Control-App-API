@@ -15,24 +15,22 @@ namespace Finances_Control_App_API.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<GetAllTransactiosByUserReturn>> GetAllTransactiosByUser(GetAllTransactiosByUserParams parametros)
+        public async Task<IEnumerable<TransferDTO>> GetAllTransactiosByUser(GetAllTransactiosByUserParams parametros)
         {
             var query = $@"SELECT T.TransferId,
                       T.TransferAmount,
                       T.TransferDescription,
                       T.TransferDate,
                       T.CategoryId,
-                      C.CategoryName,
                       T.AccountId,
                       T.UserId
                FROM Transfer T
-               JOIN Category C ON T.CategoryId = C.CategoryId
-               WHERE T.UserId = @parametros.IdUsuario AND T.AccountId = @parametros.IdConta";
+               WHERE T.UserId = @UserId AND T.AccountId = @AccountId";
 
 
             using var connection = _context.Database.GetDbConnection();
 
-            return await connection.QueryAsync<GetAllTransactiosByUserReturn>(query, new { parametros.IdUsuario, parametros.IdConta });
+            return await connection.QueryAsync<TransferDTO>(query, new { parametros.UserId, parametros.AccountId });
         }
 
         public async Task<IEnumerable<Transfer>> GetAll()

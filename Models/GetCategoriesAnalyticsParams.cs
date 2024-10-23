@@ -2,7 +2,7 @@
 {
     public class GetCategoriesAnalyticsParams
     {
-        public int IdUsuario { get; set; }
-        public int IdConta { get; set; } 
+        public int UserId { get; set; }
+        public int AccountId { get; set; } 
     }
 }

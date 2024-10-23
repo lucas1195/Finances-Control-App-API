@@ -35,7 +35,7 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetAllTranfersByUser")]
-        public async Task<IEnumerable<GetAllTransactiosByUserReturn>> GetAllTranfersByUser([FromQuery] GetAllTransactiosByUserParams parametros)
+        public async Task<IEnumerable<TransferDTO>> GetAllTranfersByUser([FromQuery] GetAllTransactiosByUserParams parametros)
         {
             try
             {

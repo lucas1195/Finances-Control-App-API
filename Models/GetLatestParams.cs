@@ -2,9 +2,9 @@
 {
     public class GetLatestParams
     {
-        public int IdUsuario { get; set; }
+        public int UserId { get; set; }
 
-        public int IdConta { get; set; }
+        public int AccountId { get; set; }
 
         public int Top { get; set; } = 10;
     }

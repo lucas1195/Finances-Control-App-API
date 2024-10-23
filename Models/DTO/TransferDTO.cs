@@ -1,6 +1,6 @@
 ﻿namespace Finances_Control_App_API.Models.DTO
 {
-    public class TransferenciaDTO
+    public class TransferDTO
     {
         public int? TransferId { get; set; }
         public decimal? TransferAmount { get; set; }
