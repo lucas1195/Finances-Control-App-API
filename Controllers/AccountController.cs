@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Finances_Control_App_API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountController(AccountService accountService) : ControllerBase
     {
         private readonly AccountService _accountService = accountService;
