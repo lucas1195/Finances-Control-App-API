@@ -12,8 +12,21 @@ namespace Finances_Control_App_API.Services
         private readonly Context _context = context;
 
 
-        public async Task<int> InsertAccount(Account account)
+        public async Task<int> InsertAccount(AccountDTO accountDto)
         {
+            var account = new Account
+            {
+                AccountId = accountDto.AccountId,
+                UserId = accountDto.UserId,
+                AgencyNumber = accountDto.AgencyNumber,
+                AccountNumber = accountDto.AccountNumber,
+                AccountName = accountDto.AccountName,
+                InstitutionName = accountDto.InstitutionName,
+                Balance = accountDto.Balance,
+                AccountFlagId = accountDto.AccountFlagId,
+                TransactionType = accountDto.TransactionType
+            };
+
             await _context.AddAsync(account);
 
             return await _context.SaveChangesAsync();
@@ -50,23 +63,25 @@ namespace Finances_Control_App_API.Services
         public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser(int UserId)
         {
 
-            var query = $@"SELECT C.AccountId,
-                          C.UserId,
-                          U.UserName,
-                          C.AgencyNumber,
-                          C.Balance,
-                          C.AccountNumber,
-                          AF.AccountFlagId,
-                          AF.AccountFlagName
-                   FROM Account C
-                   INNER JOIN User U ON C.UserId = U.UserId
-                   LEFT JOIN AccountFlag AF ON C.AccountFlagId = AF.AccountFlagId
-                   WHERE C.UserId = @UserId";
+            return await (from a in _context.Account
+                          join u in _context.User on a.UserId equals u.UserId
+                          join af in _context.AccountFlag on a.AccountFlagId equals af.AccountFlagId into accountFlagJoin
+                          from af in accountFlagJoin.DefaultIfEmpty()
+                          where a.UserId == UserId
+                          select new GetAccountsByUserReturn
+                          {
+                              AccountId = a.AccountId,
+                              UserId = a.UserId,
+                              UserName = u.UserName,
+                              AgencyNumber = a.AgencyNumber,
+                              InstitutionName = a.InstitutionName,
+                              Balance = a.Balance,
+                              AccountNumber = a.AccountNumber,
+                              AccountFlagId = af.AccountFlagId,
+                              AccountFlagName = af.AccountFlagName,
+                              TransactionType = a.TransactionType
 
-
-            using var connection = _context.Database.GetDbConnection();
-
-            return await connection.QueryAsync<GetAccountsByUserReturn>(query, new { UserId });
+                          }).ToListAsync();
         }
 
 

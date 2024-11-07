@@ -11,6 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<Context>
     (options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Finances-Control-App-API")));
 
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<DashBoardService>();
 builder.Services.AddScoped<TransferenciaService>();
 builder.Services.AddScoped<AccountService>();

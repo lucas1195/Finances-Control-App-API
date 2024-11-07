@@ -1,14 +1,18 @@
-﻿namespace Finances_Control_App_API.Models
+﻿using Finances_Control_App.Domain.FinancesApp.Enums;
+
+namespace Finances_Control_App_API.Models
 {
     public class GetAccountsByUserReturn
     {
-        public int IdConta { get; set; }
-        public int IdUsuario { get; set; }
-        public string NmUsuario { get; set; }
-        public string NmAgencia { get; set; }
-        public int NumConta { get; set; }
-        public double Saldo { get; set; }
-        public int? IdAccountFlag { get; set; }
-        public string? NmAccountFlag { get; set; }
+        public int AccountId { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string InstitutionName { get; set; }
+        public string? AgencyNumber { get; set; }
+        public string? AccountNumber { get; set; }
+        public double Balance { get; set; }
+        public int? AccountFlagId { get; set; }
+        public string? AccountFlagName { get; set; }
+        public AccountType? TransactionType { get; set; }
     }
 }

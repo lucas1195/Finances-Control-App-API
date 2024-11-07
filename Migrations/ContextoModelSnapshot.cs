@@ -10,113 +10,218 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Finances_Control_App_API.Migrations
 {
-    [DbContext(typeof(Contexto))]
+    [DbContext(typeof(Context))]
     partial class ContextoModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Categoria", b =>
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Account", b =>
                 {
-                    b.Property<int>("IdCategoria")
+                    b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCategoria"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
-                    b.Property<string>("NmCategoria")
+                    b.Property<int?>("AccountFlagId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AccountName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("IdCategoria");
+                    b.Property<string>("AccountNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.ToTable("Categoria");
+                    b.Property<string>("AgencyNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("InstitutionName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AccountId");
+
+                    b.HasIndex("AccountFlagId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Conta", b =>
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.AccountFlag", b =>
                 {
-                    b.Property<int>("IdConta")
+                    b.Property<int>("AccountFlagId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdConta"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountFlagId"));
 
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NmAgencia")
+                    b.Property<byte[]>("AccountFlagImage")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("NumConta")
+                    b.Property<string>("AccountFlagName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("IdConta");
+                    b.HasKey("AccountFlagId");
 
-                    b.ToTable("Conta");
+                    b.ToTable("AccountFlag");
                 });
 
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Transferencia", b =>
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Category", b =>
                 {
-                    b.Property<int>("IdTransferencia")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTransferencia"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
-                    b.Property<string>("DsTransferencia")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("DtTransferencia")
-                        .HasColumnType("datetime2");
+                    b.HasKey("CategoryId");
 
-                    b.Property<int>("IdCategoria")
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Transfer", b =>
+                {
+                    b.Property<int>("TransferId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("IdConta")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransferId"));
+
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsuario")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("VlTransferencia")
+                    b.Property<decimal>("TransferAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("IdTransferencia");
+                    b.Property<DateTime>("TransferDate")
+                        .HasColumnType("datetime2");
 
-                    b.ToTable("Transferencia");
+                    b.Property<string>("TransferDescription")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransferId");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transfer");
                 });
 
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Usuario", b =>
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.User", b =>
                 {
-                    b.Property<int>("IdUsuario")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("NmLogin")
+                    b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("NmSenha")
+                    b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("NmUsuario")
+                    b.Property<string>("UserEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("IdUsuario");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.ToTable("Usuario");
+                    b.HasKey("UserId");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Account", b =>
+                {
+                    b.HasOne("Finances_Control_App.Domain.FinancesApp.AccountFlag", "AccountFlag")
+                        .WithMany()
+                        .HasForeignKey("AccountFlagId");
+
+                    b.HasOne("Finances_Control_App.Domain.FinancesApp.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccountFlag");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Transfer", b =>
+                {
+                    b.HasOne("Finances_Control_App.Domain.FinancesApp.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Finances_Control_App.Domain.FinancesApp.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Finances_Control_App.Domain.FinancesApp.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Finances_Control_App_API.Migrations
 {
-    [DbContext(typeof(Contexto))]
+    [DbContext(typeof(Context))]
     [Migration("20240630233745_InitialCreate")]
     partial class InitialCreate
     {

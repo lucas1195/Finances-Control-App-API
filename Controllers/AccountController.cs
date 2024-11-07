@@ -14,7 +14,7 @@ namespace Finances_Control_App_API.Controllers
         private readonly AccountService _accountService = accountService;
 
         [HttpPost("InsertAccount")]
-        public async Task<IActionResult> InsertAccount([FromBody] Account account)
+        public async Task<IActionResult> InsertAccount([FromBody] AccountDTO account)
         {
             try
             {
@@ -67,11 +67,11 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetAccountsByUser")]
-        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser([FromQuery] int IdUsuario)
+        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser([FromQuery] int UserId)
         {
             try
             {
-                return await _accountService.GetAccountsByUser(IdUsuario);
+                return await _accountService.GetAccountsByUser(UserId);
             }
             catch (Exception ex)
             {
