@@ -1,96 +1,66 @@
-﻿using Finances_Control_App.Domain.FinancesApp;
-using Finances_Control_App_API.Models.DTO;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Finances_Control_App.Domain.FinancesApp.Models;
+using Finances_Control_App_API.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController(Context context) : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly Context _context = context;
+        private readonly IRepository<Category> _categoryRepository;
 
-
-        [HttpGet("GetAll")]
-        public async Task<IEnumerable<Category>> GetAll()
+        public CategoryController(IRepository<Category> categoryRepository)
         {
-            return await _context.Category.ToListAsync();
+            _categoryRepository = categoryRepository;
         }
 
-
-        [HttpPost("InsertCategory")]
-        public async Task<IActionResult> InsertCategory([FromBody] Category categoryParam)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                await _context.Category.AddAsync(categoryParam);
-
-                return Ok(await _context.SaveChangesAsync());
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var categories = await _categoryRepository.GetAllAsync();
+            return Ok(categories);
         }
 
-        [HttpDelete("DeleteCategory")]
-        public async Task<IActionResult> DeleteCategory([FromQuery] int CategoryId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            try
+            var category = await _categoryRepository.GetByIdAsync(id);
+
+            if (category == null)
             {
-                var retorno = await _context.Category.Where(x => x.CategoryId == CategoryId).FirstOrDefaultAsync();
-
-                if (retorno == null)
-                {
-                    return BadRequest($"Category with ID {CategoryId} was not found.");
-                }
-
-                _context.Category.Remove(retorno);
-
-                return Ok(await _context.SaveChangesAsync());
-
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            return Ok(category);
         }
 
-        [HttpPost("UpdateCategory")]
-        public async Task<IActionResult> UpdateCategory([FromBody] Category categoryParams)
+        [HttpPost]
+        public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            try
-            {
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                if (categoryParams.CategoryId == null)
-                {
-                    return BadRequest("Category ID cannot be null.");
-                }
-
-                await _context.Category.Where(x => x.CategoryId == categoryParams.CategoryId).
-                    ExecuteUpdateAsync(x =>
-                    x.SetProperty(b => b.CategoryName, categoryParams.CategoryName));
-
-                return Ok(_context.SaveChanges());
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _categoryRepository.AddAsync(category);
+            return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCategory(int id, Category category)
+        {
+            if (id != category.CategoryId)
+            {
+                return BadRequest();
+            }
+
+            await _categoryRepository.UpdateAsync(category);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            await _categoryRepository.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

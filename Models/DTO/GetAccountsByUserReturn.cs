@@ -1,6 +1,6 @@
 ﻿using Finances_Control_App.Domain.FinancesApp.Enums;
 
-namespace Finances_Control_App_API.Models
+namespace Finances_Control_App_API.Models.DTO
 {
     public class GetAccountsByUserReturn
     {

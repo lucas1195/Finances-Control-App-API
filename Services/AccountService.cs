@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Finances_Control_App.Domain.FinancesApp;
-using Finances_Control_App_API.Models;
+using Finances_Control_App.Domain.FinancesApp.Models;
 using Finances_Control_App_API.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -12,21 +12,8 @@ namespace Finances_Control_App_API.Services
         private readonly Context _context = context;
 
 
-        public async Task<int> InsertAccount(AccountDTO accountDto)
+        public async Task<int> InsertAccount(Account account)
         {
-            var account = new Account
-            {
-                AccountId = accountDto.AccountId,
-                UserId = accountDto.UserId,
-                AgencyNumber = accountDto.AgencyNumber,
-                AccountNumber = accountDto.AccountNumber,
-                AccountName = accountDto.AccountName,
-                InstitutionName = accountDto.InstitutionName,
-                Balance = accountDto.Balance,
-                AccountFlagId = accountDto.AccountFlagId,
-                TransactionType = accountDto.TransactionType
-            };
-
             await _context.AddAsync(account);
 
             return await _context.SaveChangesAsync();

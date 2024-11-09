@@ -2,7 +2,6 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Finances-Control-App.API.Tests.deps.json
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Finances-Control-App.API.Tests.runtimeconfig.json
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\testhost.exe
-C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\appsettings.Development.json
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\appsettings.json
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\xunit.runner.visualstudio.testadapter.dll
@@ -58,7 +57,6 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Newtonsoft.Json.dll
-C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\NuGet.Frameworks.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll

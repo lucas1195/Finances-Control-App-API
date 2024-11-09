@@ -1,5 +1,7 @@
 ﻿using Finances_Control_App.Domain.FinancesApp;
-using Finances_Control_App_API.Models;
+using Finances_Control_App.Domain.FinancesApp.Models;
+using Finances_Control_App_API.Infraestructure.Repositories;
+using Finances_Control_App_API.Interfaces;
 using Finances_Control_App_API.Models.DTO;
 using Finances_Control_App_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +11,17 @@ namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController(AccountService accountService) : ControllerBase
+    public class AccountController : ControllerBase
     {
-        private readonly AccountService _accountService = accountService;
+        private readonly IAccountRepository _accountRepository;
+
+        public AccountController(IAccountRepository accountRepository)
+        {
+            _accountRepository = accountRepository;
+        }
 
         [HttpPost("InsertAccount")]
-        public async Task<IActionResult> InsertAccount([FromBody] AccountDTO account)
+        public async Task<IActionResult> InsertAccount([FromBody] Account account)
         {
             try
             {
@@ -23,7 +30,7 @@ namespace Finances_Control_App_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                return Ok(await _accountService.InsertAccount(account));
+                return Ok(await _accountRepository.AddAsync(account));
             }
             catch (Exception ex)
             {
@@ -32,46 +39,23 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("UpdateAccount")]
-        public async Task<IActionResult> UpdateAccount([FromBody] Account account)
+        public async Task UpdateAccount([FromBody] Account account)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                return Ok(await _accountService.UpdateAccount(account));
-                
-            }catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            await _accountRepository.UpdateAsync(account);
         }
 
         [HttpDelete("DeleteAccount")]
-        public async Task<IActionResult> DeleteAccount([FromQuery] int IdConta)
+        public async Task DeleteAccount([FromQuery] int idConta)
         {
-            try
-            {
-                return Ok(await _accountService.DeleteAccount(IdConta));
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            await _accountRepository.DeleteAsync(idConta);
         }
 
         [HttpGet("GetAccountsByUser")]
-        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser([FromQuery] int UserId)
+        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser([FromQuery] int userId)
         {
             try
             {
-                return await _accountService.GetAccountsByUser(UserId);
+                return await _accountRepository.GetAccountsByUser(userId);
             }
             catch (Exception ex)
             {
@@ -79,6 +63,6 @@ namespace Finances_Control_App_API.Controllers
             }
 
         }
-        
+
     }
 }
