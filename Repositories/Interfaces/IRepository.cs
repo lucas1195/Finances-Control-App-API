@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Finances_Control_App_API.Interfaces
+namespace Finances_Control_App_API.Repositories.Interfaces
 {
     public interface IRepository<T> where T : class
     {

@@ -1,9 +1,8 @@
 ﻿using Dapper;
 using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App.Domain.FinancesApp.Models;
-using Finances_Control_App_API.Infraestructure.Repositories;
-using Finances_Control_App_API.Interfaces;
-using Finances_Control_App_API.Models.DTO;
+using Finances_Control_App_API.DTO;
+using Finances_Control_App_API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +12,10 @@ using System.Linq;
 
 namespace Finances_Control_App_API.Services
 {
-    public class DashBoardService
+    public class DashBoardService(IRepository<Transfer> transferRepository, IRepository<Category> categoryRepository)
     {
-        private readonly IRepository<Transfer> _transferRepository;
-        private readonly IRepository<Category> _categoryRepository;
-
-        public DashBoardService(IRepository<Transfer> transferRepository, IRepository<Category> categoryRepository)
-        {
-            _transferRepository = transferRepository;
-            _categoryRepository = categoryRepository;
-        }
+        private readonly IRepository<Transfer> _transferRepository = transferRepository;
+        private readonly IRepository<Category> _categoryRepository = categoryRepository;
 
         public async Task<IEnumerable<TransferDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
         {

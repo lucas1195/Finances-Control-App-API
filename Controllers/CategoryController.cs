@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Finances_Control_App.Domain.FinancesApp.Models;
-using Finances_Control_App_API.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Finances_Control_App_API.Repositories.Interfaces;
 
 namespace Finances_Control_App_API.Controllers
 {

@@ -1,7 +1,6 @@
 using Finances_Control_App.Domain.FinancesApp.Models;
-using Finances_Control_App_API.Infraestructure.Repositories;
-using Finances_Control_App_API.Interfaces;
 using Finances_Control_App_API.Repositories;
+using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;

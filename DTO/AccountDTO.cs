@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Xunit.Sdk;
 
-namespace Finances_Control_App_API.Models.DTO
+namespace Finances_Control_App_API.DTO
 {
     public class AccountDTO
     {

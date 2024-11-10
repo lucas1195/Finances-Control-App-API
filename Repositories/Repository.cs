@@ -1,5 +1,5 @@
 ﻿using Finances_Control_App.Domain.FinancesApp.Models;
-using Finances_Control_App_API.Interfaces;
+using Finances_Control_App_API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

@@ -1,10 +1,9 @@
 ﻿using Finances_Control_App.Domain.FinancesApp.Models;
-using Finances_Control_App_API.Interfaces;
-using Finances_Control_App_API.Models.DTO;
-using Finances_Control_App_API.Repositories;
+using Finances_Control_App_API.DTO;
+using Finances_Control_App_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Finances_Control_App_API.Infraestructure.Repositories
+namespace Finances_Control_App_API.Repositories
 {
     public class AccountRepository : Repository<Account>, IAccountRepository
     {
