@@ -231,3 +231,6 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\obj\Debug\net8.0\Finances-Control-App-API.pdb
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\obj\Debug\net8.0\Finances-Control-App-API.genruntimeconfig.cache
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\obj\Debug\net8.0\ref\Finances-Control-App-API.dll
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\Microsoft.Bcl.TimeProvider.dll
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App-API\bin\Debug\net8.0\BCrypt.Net-Next.dll

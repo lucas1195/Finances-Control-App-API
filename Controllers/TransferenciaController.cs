@@ -4,6 +4,7 @@ using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories;
 using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
@@ -12,6 +13,7 @@ namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransferenciaController(ITransferRepository transferRepository) : ControllerBase
     {
         private readonly ITransferRepository _transferRepository = transferRepository;

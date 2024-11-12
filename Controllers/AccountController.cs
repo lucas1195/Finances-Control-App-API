@@ -3,6 +3,7 @@ using Finances_Control_App.Domain.FinancesApp.Models;
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -10,6 +11,7 @@ namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;

@@ -3,11 +3,13 @@ using Finances_Control_App.Domain.FinancesApp.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Finances_Control_App_API.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoryController : ControllerBase
     {
         private readonly IRepository<Category> _categoryRepository;

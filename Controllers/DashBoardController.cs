@@ -1,12 +1,14 @@
 ﻿using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Finances_Control_App_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DashBoardController(DashBoardService dashBoardService) : ControllerBase
     {
         private readonly DashBoardService _dashboardService = dashBoardService;
