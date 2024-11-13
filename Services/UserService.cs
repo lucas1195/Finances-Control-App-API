@@ -15,9 +15,9 @@ namespace Finances_Control_App_API.Services
 
         private readonly IConfiguration _config = config;
 
-        public async Task<LoginResponseDTO> LogginUser(User loginRequestModel)
+        public async Task<LoginResponseDTO> LogginUser(LoginRequestModel loginRequestModel)
         {
-            var getUser = FindUserByUserName(loginRequestModel.UserName);
+            var getUser = FindUserByEmail(loginRequestModel.UserEmail);
             if (getUser.Result == null)
                 return new LoginResponseDTO(false, "User Not Found");
 
@@ -62,9 +62,9 @@ namespace Finances_Control_App_API.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<User> FindUserByUserName(string userName)
+        public async Task<User> FindUserByEmail(string userEmail)
         {
-            return  _userRepository.Table.FirstOrDefault(x => x.UserName == userName);
+            return  _userRepository.Table.FirstOrDefault(x => x.UserEmail == userEmail);
         }
         
 

@@ -13,7 +13,7 @@ namespace Finances_Control_App_API.Controllers
 
 
         [HttpPost("Login")]
-        public async Task<ActionResult<LoginResponseDTO>> Add(User loginRequestModel)
+        public async Task<ActionResult<LoginResponseDTO>> Add(LoginRequestModel loginRequestModel)
         {
             var result = await _userService.LogginUser(loginRequestModel);
 
