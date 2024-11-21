@@ -2,6 +2,7 @@
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,15 +19,23 @@ namespace Finances_Control_App_API.Services
         public async Task<LoginResponseDTO> LogginUser(LoginRequestModel loginRequestModel)
         {
             var getUser = FindUserByEmail(loginRequestModel.UserEmail);
+
             if (getUser.Result == null)
+            {
                 return new LoginResponseDTO(false, "User Not Found");
+            }
 
             bool checkPassword = BCrypt.Net.BCrypt.Verify(loginRequestModel.Password, getUser.Result.Password);
+            
             if (checkPassword)
-
+            {
                 return new LoginResponseDTO(true, "Login Successfully", GeneretateJWT(getUser.Result));
+            }
             else
+            {
                 return new LoginResponseDTO(false, "Invalid Password");
+            }
+
         }
 
         public async Task UpdatePassword(User user, string newPassword)
@@ -55,16 +64,16 @@ namespace Finances_Control_App_API.Services
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: userClaims,
-                expires: DateTime.Now.AddDays(5),
+                expires: DateTime.Now.AddHours(2),
                 signingCredentials: credentials
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<User> FindUserByEmail(string userEmail)
+        public Task<User> FindUserByEmail(string userEmail)
         {
-            return  _userRepository.Table.FirstOrDefault(x => x.UserEmail == userEmail);
+            return _userRepository.Table.FirstOrDefaultAsync(x => x.UserEmail == userEmail);
         }
         
 

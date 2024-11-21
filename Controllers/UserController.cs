@@ -19,7 +19,7 @@ namespace Finances_Control_App_API.Controllers
 
             if (result.Success)
             {
-                Response.Headers.Add("Authorization", "Bearer " + result.Token);
+                Response.Headers.Append("Authorization", "Bearer " + result.Token);
                 return Ok(result);
             }
             else
