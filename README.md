@@ -1,6 +1,5 @@
 # Finances-Control-App-API
 
-# Finances-Control-App-API
 
 ## Descrição
 
