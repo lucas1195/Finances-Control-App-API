@@ -3,9 +3,11 @@ using Finances_Control_App.Domain.FinancesApp.Models;
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services;
+using Finances_Control_App_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Claims;
 
 namespace Finances_Control_App_API.Controllers
 {
@@ -15,10 +17,12 @@ namespace Finances_Control_App_API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IUserContext _userContext;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, IUserContext userContext)
         {
             _accountRepository = accountRepository;
+            _userContext = userContext;
         }
 
         [HttpPost("InsertAccount")]
@@ -26,6 +30,9 @@ namespace Finances_Control_App_API.Controllers
         {
             try
             {
+                var userId = _userContext.GetCurrentUserId();
+                account.UserId = userId;
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);

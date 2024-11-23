@@ -1,4 +1,5 @@
 using Finances_Control_App.Domain.FinancesApp.Models;
+using Finances_Control_App_API.Middleware;
 using Finances_Control_App_API.Repositories;
 using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services;
@@ -19,6 +20,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<Context>
     (options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Finances-Control-App-API")));
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IUserContext, UserContext>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<DashBoardService>();
@@ -67,7 +72,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "InventoryAPI",
+        Title = "Finances-Control-App.API",
         Version = "v1"
     });
 
@@ -103,11 +108,15 @@ var app = builder.Build();
 
 app.UseAuthentication();
 // Configure the HTTP request pipeline.
+app.UseMiddleware<UserContextMiddleware>();
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseCors();
 

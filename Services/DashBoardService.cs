@@ -3,6 +3,7 @@ using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App.Domain.FinancesApp.Models;
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories.Interfaces;
+using Finances_Control_App_API.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,15 +13,27 @@ using System.Linq;
 
 namespace Finances_Control_App_API.Services
 {
-    public class DashBoardService(IRepository<Transfer> transferRepository, IRepository<Category> categoryRepository)
+    public class DashBoardService
     {
-        private readonly IRepository<Transfer> _transferRepository = transferRepository;
-        private readonly IRepository<Category> _categoryRepository = categoryRepository;
+        private readonly IRepository<Transfer> _transferRepository;
+        private readonly IRepository<Category> _categoryRepository;
+        private readonly IUserContext _userContext;
+        private readonly int _userId;
+
+        public DashBoardService(IRepository<Transfer> transferRepository, IRepository<Category> categoryRepository, IUserContext userContext)
+        {
+            _transferRepository = transferRepository;
+            _categoryRepository = categoryRepository;
+            _userContext = userContext;
+
+            _userId = _userContext.GetCurrentUserId();
+        }
 
         public async Task<IEnumerable<TransferDTO>> GetTransfersByPeriod(GetTransfersByPeriodParams filter)
         {
+
             var query = _transferRepository.Table
-                .Where(t => t.UserId == filter.UserId && t.AccountId == filter.AccountId);
+                .Where(t => t.UserId == _userId && t.AccountId == filter.AccountId);
 
             if (filter.FilterType == "Last7Days")
             {
@@ -56,7 +69,7 @@ namespace Finances_Control_App_API.Services
         public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth(int IdUsuario, int IdConta)
         {
             return await _transferRepository.Table
-                .Where(t => t.UserId == IdUsuario && t.AccountId == IdConta)
+                .Where(t => t.UserId == _userId && t.AccountId == IdConta)
                 .GroupBy(t => new { Year = t.TransferDate.Year, Month = t.TransferDate.Month })
                 .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
                 .Select(g => new GetAnalyticsByMonthReturn
@@ -72,7 +85,7 @@ namespace Finances_Control_App_API.Services
         {
             var result = await (from t in _transferRepository.Table
                                 join c in _categoryRepository.Table on t.CategoryId equals c.CategoryId
-                                where t.UserId == filer.UserId && t.AccountId == filer.AccountId
+                                where t.UserId == _userId && t.AccountId == filer.AccountId
                                 group t by c.CategoryName into g
                                 select new GetCategoriesAnalyticsReturn
                                 {
@@ -88,7 +101,7 @@ namespace Finances_Control_App_API.Services
         {
 
             return await _transferRepository.Table
-                          .Where(t => t.UserId == parametros.UserId && t.AccountId == parametros.AccountId)
+                          .Where(t => t.UserId == _userId && t.AccountId == parametros.AccountId)
                           .Select(t => new TransferDTO
                           {
                               TransferId = t.TransferId,

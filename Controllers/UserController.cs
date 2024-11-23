@@ -29,7 +29,7 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpPost("UpdatePassword")]
-        public async Task UpdatePassword(User loginRequestModel, string newPassword)
+        public async Task UpdatePassword([FromBody] User loginRequestModel, [FromQuery] string newPassword)
         {
            await _userService.UpdatePassword(loginRequestModel, newPassword);
         }
