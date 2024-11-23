@@ -15,8 +15,17 @@ namespace Finances_Control_App_API.Middleware
         {
             if (context.User.Identity.IsAuthenticated)
             {
-                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                context.Items["UserId"] = userId != null ? int.Parse(userId) : null;
+
+                var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (!string.IsNullOrEmpty(userIdClaim) && int.TryParse(userIdClaim, out var userId))
+                {
+                    context.Items["UserId"] = userId;
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("UserId is missing or invalid.");
+                }
             }
 
             await _next(context);

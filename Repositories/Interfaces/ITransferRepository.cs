@@ -5,6 +5,6 @@ namespace Finances_Control_App_API.Repositories.Interfaces
 {
     public interface ITransferRepository : IRepository<Transfer>
     {
-        Task<IEnumerable<TransferDTO>> GetAllTransactiosByUser(GetAllTransactiosByUserParams parametros);
+        Task<IEnumerable<TransferDTO>> GetAllTransactiosByUser(int userId);
     }
 }

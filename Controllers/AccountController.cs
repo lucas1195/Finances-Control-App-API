@@ -59,10 +59,12 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetAccountsByUser")]
-        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser([FromQuery] int userId)
+        public async Task<IEnumerable<GetAccountsByUserReturn>> GetAccountsByUser()
         {
             try
             {
+                var userId = _userContext.GetCurrentUserId();
+
                 return await _accountRepository.GetAccountsByUser(userId);
             }
             catch (Exception ex)

@@ -9,10 +9,10 @@ namespace Finances_Control_App_API.Repositories
     {
 
         public TransferRepository(Context context) : base(context) { }
-        public async Task<IEnumerable<TransferDTO>> GetAllTransactiosByUser(GetAllTransactiosByUserParams parametros)
+        public async Task<IEnumerable<TransferDTO>> GetAllTransactiosByUser(int userId)
         {
             return await Table
-            .Where(t => t.UserId == parametros.UserId && t.AccountId == parametros.AccountId)
+            .Where(t => t.UserId == userId)
             .Select(t => new TransferDTO
             {
                 TransferId = t.TransferId,

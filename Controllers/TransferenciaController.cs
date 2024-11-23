@@ -4,6 +4,7 @@ using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories;
 using Finances_Control_App_API.Repositories.Interfaces;
 using Finances_Control_App_API.Services;
+using Finances_Control_App_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,10 @@ namespace Finances_Control_App_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class TransferenciaController(ITransferRepository transferRepository) : ControllerBase
+    public class TransferenciaController(ITransferRepository transferRepository, IUserContext userContext) : ControllerBase
     {
         private readonly ITransferRepository _transferRepository = transferRepository;
+        private readonly IUserContext _userContext = userContext;
 
         [HttpGet("GetAll")]
         public async Task<IEnumerable<Transfer>> GetAll()
@@ -25,9 +27,11 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetAllTranfersByUser")]
-        public async Task<IEnumerable<TransferDTO>> GetAllTranfersByUser([FromQuery] GetAllTransactiosByUserParams parametros)
+        public async Task<IEnumerable<TransferDTO>> GetAllTranfersByUser()
         {
-            return await _transferRepository.GetAllTransactiosByUser(parametros);
+            var userId = _userContext.GetCurrentUserId();
+            
+            return await _transferRepository.GetAllTransactiosByUser(userId);
         }
 
         [HttpPost("UpdateTransfer")]
