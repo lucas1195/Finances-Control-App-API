@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Finances_Control_App_API.Services
 {
-    public class DashBoardService
+    public class DashBoardService : IDashBoardService
     {
         private readonly IRepository<Transfer> _transferRepository;
         private readonly IRepository<Category> _categoryRepository;
@@ -66,7 +66,7 @@ namespace Finances_Control_App_API.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth(int IdUsuario, int IdConta)
+        public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth(int IdConta)
         {
             return await _transferRepository.Table
                 .Where(t => t.UserId == _userId && t.AccountId == IdConta)

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Finances-Control-App-API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b0ac7f27d6ddb391ce4c745a014599735f8b479")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d13834a30fadb9ef1edc585715751cd395a8de23")]
 [assembly: System.Reflection.AssemblyProductAttribute("Finances-Control-App-API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Finances-Control-App-API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
