@@ -33,9 +33,9 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetAnalyticsByMonth")]
-        public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth([FromQuery] int IdUsuario, [FromQuery] int IdConta)
+        public async Task<IEnumerable<GetAnalyticsByMonthReturn>> GetAnalyticsByMonth([FromQuery] int IdConta)
         {
-            return await _dashboardService.GetAnalyticsByMonth(IdUsuario, IdConta);
+            return await _dashboardService.GetAnalyticsByMonth(IdConta);
         }
     }
 }
