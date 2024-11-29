@@ -1,22 +1,15 @@
-# Ignora a pasta .vs dentro da pasta da API
 Finances-Control-App-API/.vs/
 
-# Ignora arquivos de log dentro da pasta da API
 Finances-Control-App-API/*.log
 
-# Ignora os diretórios de compilação (bin e obj) dentro da pasta da API
 Finances-Control-App-API/bin/
 Finances-Control-App-API/obj/
 
-# Ignora pacotes de dependência (se houver algum arquivo .nupkg)
 Finances-Control-App-API/*.nupkg
 
-# Adiciona arquivos específicos de configuração do Visual Studio
 *.user
 *.suo
 
-# Ignora o diretório packages caso ele exista
 Finances-Control-App-API/packages/
 
-# Ignora arquivos de configuração locais (por exemplo, para informações sensíveis ou locais)
-appsettings.Local.json
+Finances-Control-App-API/appsettings.Local.json
