@@ -161,3 +161,4 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\ref\Finances-Control-App.API.Tests.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Castle.Core.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Moq.dll
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.sourcelink.json

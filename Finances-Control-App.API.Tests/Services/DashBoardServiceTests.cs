@@ -55,16 +55,13 @@ namespace Finances_Control_App.API.Tests.Services
                 }
             };
 
-            // Mockando o DbSet
             var mockDbSet = new Mock<DbSet<Transfer>>();
 
-            // Configurando o comportamento do DbSet
             //mockDbSet.As<IQueryable<Transfer>>().Setup(m => m.Provider).Returns(mockTransfers.Provider);
             //mockDbSet.As<IQueryable<Transfer>>().Setup(m => m.Expression).Returns(mockTransfers.Expression);
             //mockDbSet.As<IQueryable<Transfer>>().Setup(m => m.ElementType).Returns(mockTransfers.ElementType);
             mockDbSet.As<IQueryable<Transfer>>().Setup(m => m.GetEnumerator()).Returns(mockTransfers.GetEnumerator());
 
-            // Mockando o repositório para usar o DbSet mockado
             _transferRepositoryMock.Setup(repo => repo.Table).Returns(mockDbSet.Object);
         }
 
