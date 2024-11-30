@@ -64,7 +64,7 @@ namespace Finances_Control_App_API.Services
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: userClaims,
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.Now.AddHours(3),
                 signingCredentials: credentials
                 );
 
