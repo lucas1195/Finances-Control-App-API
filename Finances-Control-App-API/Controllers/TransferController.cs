@@ -15,7 +15,7 @@ namespace Finances_Control_App_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class TransferenciaController(ITransferRepository transferRepository, IUserContext userContext) : ControllerBase
+    public class TransferController(ITransferRepository transferRepository, IUserContext userContext) : ControllerBase
     {
         private readonly ITransferRepository _transferRepository = transferRepository;
         private readonly IUserContext _userContext = userContext;
