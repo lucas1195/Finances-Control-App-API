@@ -12,4 +12,6 @@ Finances-Control-App-API/*.nupkg
 
 Finances-Control-App-API/packages/
 
+Finances-Control-App-API/appsettings.json
+
 Finances-Control-App-API/appsettings.Local.json

@@ -13,7 +13,6 @@ namespace Finances_Control_App_API.Services
     public class UserService(IRepository<User> userRepository, IConfiguration config) : IUserService 
     {
         private readonly IRepository<User> _userRepository = userRepository;
-
         private readonly IConfiguration _config = config;
 
         public async Task<LoginResponseDTO> LogginUser(LoginRequestModel loginRequestModel)
