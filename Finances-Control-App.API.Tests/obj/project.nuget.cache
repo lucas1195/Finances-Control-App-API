@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SQiYdGAMfO1jvl+nyoq2KCBITaJB/BH0cYwyWDZ1KVYRyqRh2JkzFnnMgI05VgKDrfDF4LYNzns2d4E5YTgBMA==",
+  "dgSpecHash": "kac95AIQRIYSK0uUmejqhSpaoP1zi548MfQ8Nw4m6WTP5Ry0Mr5B3ZYZVgWfgbmhawvzQTyb0NEMmAN69KX5RQ==",
   "success": true,
   "projectFilePath": "C:\\Projetos Pessoais\\Finances-Control-App\\Finances-Control-App-API\\Finances-Control-App.API.Tests\\Finances-Control-App.API.Tests.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\lucas\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\coverlet.collector\\6.0.2\\coverlet.collector.6.0.2.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
-    "C:\\Users\\lucas\\.nuget\\packages\\finances-control-app.domain\\1.5.7\\finances-control-app.domain.1.5.7.nupkg.sha512",
+    "C:\\Users\\lucas\\.nuget\\packages\\finances-control-app.domain\\1.6.0\\finances-control-app.domain.1.6.0.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\fluentvalidation\\11.10.0\\fluentvalidation.11.10.0.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.10\\microsoft.aspnetcore.authentication.jwtbearer.8.0.10.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
