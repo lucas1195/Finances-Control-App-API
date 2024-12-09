@@ -1,66 +1,94 @@
-﻿using Finances_Control_App.Domain.FinancesApp.Models;
+﻿using Finances_Control_App.Domain.FinancesApp.Enums;
+using Finances_Control_App.Domain.FinancesApp.Models;
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Repositories;
 using Finances_Control_App_API.Repositories.Interfaces;
+using Finances_Control_App_API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Finances_Control_App_API.Services
 {
-    public class FinancialPlanService
+    public class FinancialPlanService : IFinancialPlanService
     {
-        private readonly UserContext _userContext;
+        private readonly IUserContext _userContext;
         private readonly int _userId;
         private readonly IRepository<FinancialPlan> _financialPlanRepository;
         private readonly IRepository<Transfer> _transferRepository;
         private readonly IRepository<Account> _accountRepository;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<FinancialPlanCategory> _financialPlanCategoryRepository;
-        private readonly IRepository<FinancialPlanAccount> _financialAccountRepository;
-        private readonly IRepository<AccountFlag> _accountFlagRepository;
+        private readonly IRepository<FinancialPlanAccount> _financialPlanAccountRepository;
+        private readonly IRepository<Category> _categoryRepository;
 
-        public FinancialPlanService(UserContext userContext, 
+
+        public FinancialPlanService(IUserContext userContext, 
             IRepository<Transfer> transferRepository,
             IRepository<User> userRepository,
-            IRepository<FinancialPlanCategory> financialPlanCategory, 
-            IRepository<FinancialPlanAccount> financialAccountRepository,
+            IRepository<FinancialPlanCategory> financialPlanCategoryRepository, 
+            IRepository<FinancialPlanAccount> financialPlanAccountRepository,
             IRepository<FinancialPlan> financialPlanRepository,
             IRepository<Account> accountRepository,
-            IRepository<AccountFlag> accountFlagRepository)
+            IRepository<Category> categoryRepository)
         {
             _userContext = userContext;
             _userRepository = userRepository;
             _transferRepository = transferRepository;
             _financialPlanRepository = financialPlanRepository;
             _accountRepository = accountRepository;
-            _accountFlagRepository = accountFlagRepository;
+            _categoryRepository = categoryRepository;
+            _financialPlanCategoryRepository = financialPlanCategoryRepository;
+            _financialPlanAccountRepository = financialPlanAccountRepository;
             _userId = _userContext.GetCurrentUserId();
 
         }
 
 
-        public async Task<IEnumerable<FinancialPlanLogsResponse>> GetFinancialPlanLogs(int financialPlanId)
+        public async Task<List<FinancialPlanLogsResponse>> GetFinancialPlanLogs(int financialPlanId)
         {
-            var query = from t in _transferRepository.Table
+            var listCategoryPriorityIds = _financialPlanCategoryRepository.Table
+                .Where(x => x.FinancialPlanId == financialPlanId && x.PlanCategoryType == FinancialPlanCategoryType.Priority)
+                .Select(x => x.CategoryId)
+                .ToList();
+
+            var financialPlanAccoutIdList = _financialPlanAccountRepository.Table
+                .Where(x => x.UserId == _userId && x.FinancialPlanId == financialPlanId)
+                .Select(x => x.AccountId)
+                .ToList();
+
+            var today = DateTime.Now;
+            var daysUntilNextMonday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
+            var nextMonday = today.AddDays(daysUntilNextMonday);
+
+            var financialPlanStartDate = _financialPlanRepository.Table.Where(x => x.FinancialPlanId == financialPlanId)
+                .Select(x => x.StartDate)
+                .FirstOrDefault();
+            
+            var query = (from t in _transferRepository.Table
                         join u in _userRepository.Table on t.UserId equals u.UserId
                         join fp in _financialPlanRepository.Table on u.UserId equals fp.UserId
                         join a in _accountRepository.Table on t.AccountId equals a.AccountId
-                        join af in _accountFlagRepository.Table on a.AccountFlagId equals af.AccountFlagId
-                        where t.UserId == _userId && fp.FinancialPlanId == financialPlanId
-
-                        select new FinancialPlanLogsResponse
-                        {
-                            FanincialPlanId = fp.FinancialPlanId,
+                        join c in _categoryRepository.Table on t.CategoryId equals c.CategoryId
+                         where t.UserId == _userId && fp.FinancialPlanId == financialPlanId && t.TransferDate >= fp.StartDate && t.TransferDate < nextMonday && financialPlanAccoutIdList.Contains(a.AccountId)
+                         select new FinancialPlanLogsResponse
+                         {
+                            FinancialPlanId = fp.FinancialPlanId,
                             TransferId = t.TransferId,
                             UserId = _userId,
                             AccountId = t.AccountId,
-                            FanincialPlanName = fp.FinancialPlanName,
+                            FinancialPlanName = fp.FinancialPlanName,
                             TransferDescription = t.TransferDescription,
                             TransferAmount = t.TransferAmount,
                             TransferDate = t.TransferDate,
                             PlanStartDate = fp.StartDate,
-                        };
+                            AccountFlagId = a.AccountFlagId,
+                            CategoryId = c.CategoryId,
+                            CategoryName = c.CategoryName,
+                            CategoryType = listCategoryPriorityIds.Contains(t.CategoryId) ? FinancialPlanCategoryType.Priority : FinancialPlanCategoryType.Personal
+
+                         });
 
 
-            return new List<FinancialPlanLogsResponse>();
+            return [.. query];
         }
     }
 }

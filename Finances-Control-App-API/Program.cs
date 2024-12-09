@@ -28,6 +28,8 @@ builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<DashBoardService>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IDashBoardService, DashBoardService>();
+builder.Services.AddScoped<IFinancialPlanService, FinancialPlanService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();

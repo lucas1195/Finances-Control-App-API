@@ -4,6 +4,7 @@ using Finances_Control_App.Domain.FinancesApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Finances_Control_App_API.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20241208174726_AddNewTables")]
+    partial class AddNewTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,92 +110,6 @@ namespace Finances_Control_App_API.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Models.FinancialPlan", b =>
-                {
-                    b.Property<int>("FinancialPlanId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinancialPlanId"));
-
-                    b.Property<string>("FinancialPlanName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("MonthlyIncome")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PersonalSpendingsValue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("PlanType")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrioritarySpendingsValue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FinancialPlanId");
-
-                    b.ToTable("FinancialPlan");
-                });
-
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Models.FinancialPlanAccount", b =>
-                {
-                    b.Property<int>("FinancialPlanAccountId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinancialPlanAccountId"));
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FinancialPlanAccountId");
-
-                    b.ToTable("FinancialPlanAccount");
-                });
-
-            modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Models.FinancialPlanCategory", b =>
-                {
-                    b.Property<int>("FinancialPlanCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FinancialPlanCategoryId"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlanCategoryType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FinancialPlanCategoryId");
-
-                    b.ToTable("FinancialPlanCategory");
                 });
 
             modelBuilder.Entity("Finances_Control_App.Domain.FinancesApp.Models.Transfer", b =>

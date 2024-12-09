@@ -4,6 +4,7 @@ using Finances_Control_App.Domain.FinancesApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Finances_Control_App_API.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20241208180516_AddNewTablesFix")]
+    partial class AddNewTablesFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,7 +187,7 @@ namespace Finances_Control_App_API.Migrations
                     b.Property<int>("FinancialPlanId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlanCategoryType")
+                    b.Property<int>("PlanType")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")

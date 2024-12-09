@@ -1,6 +1,7 @@
 ﻿using Finances_Control_App.Domain.FinancesApp;
 using Finances_Control_App_API.DTO;
 using Finances_Control_App_API.Services;
+using Finances_Control_App_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace Finances_Control_App_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class DashBoardController(DashBoardService dashBoardService) : ControllerBase
+    public class DashBoardController(IDashBoardService dashBoardService) : ControllerBase
     {
-        private readonly DashBoardService _dashboardService = dashBoardService;
+        private readonly IDashBoardService _dashboardService = dashBoardService;
 
 
         [HttpGet("GetByPeriod")]
