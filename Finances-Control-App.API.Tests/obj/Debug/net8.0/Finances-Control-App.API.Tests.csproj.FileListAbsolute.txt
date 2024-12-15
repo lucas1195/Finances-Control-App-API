@@ -17,6 +17,7 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Azure.Core.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Azure.Identity.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Castle.Core.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Dapper.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Finances-Control-App.Domain.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\FluentValidation.dll
@@ -53,6 +54,7 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Microsoft.TestPlatform.Utilities.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.Common.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Moq.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -153,12 +155,10 @@ C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Cont
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.AssemblyInfoInputs.cache
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.AssemblyInfo.cs
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.csproj.CoreCompileInputs.cache
+C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.sourcelink.json
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.csproj.CopyComplete
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\refint\Finances-Control-App.API.Tests.dll
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.pdb
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.genruntimeconfig.cache
 C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\ref\Finances-Control-App.API.Tests.dll
-C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Castle.Core.dll
-C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\bin\Debug\net8.0\Moq.dll
-C:\Projetos Pessoais\Finances-Control-App\Finances-Control-App-API\Finances-Control-App.API.Tests\obj\Debug\net8.0\Finances-Control-App.API.Tests.sourcelink.json

@@ -128,6 +128,9 @@ namespace Finances_Control_App_API.Migrations
                     b.Property<decimal>("MonthlyIncome")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("PeriodySavingsValue")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("PersonalSpendingsValue")
                         .HasColumnType("decimal(18,2)");
 

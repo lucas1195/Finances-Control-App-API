@@ -18,6 +18,7 @@ namespace Finances_Control_App_API.DTO
         public int? AccountFlagId { get; set; }
         public string? AccountFlagName { get; set; }
         public FinancialPlanCategoryType CategoryType { get; set; }
+        public int DayOfWeek { get; set; }
 
     }
 }

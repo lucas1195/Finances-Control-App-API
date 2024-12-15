@@ -94,7 +94,7 @@
           }
         }
       },
-      "Finances-Control-App.Domain/1.6.0": {
+      "Finances-Control-App.Domain/1.6.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.8"
@@ -1580,7 +1580,7 @@
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
           "Dapper": "2.1.35",
-          "Finances-Control-App.Domain": "1.6.0",
+          "Finances-Control-App.Domain": "1.6.3",
           "FluentValidation": "11.10.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.10",
           "Microsoft.EntityFrameworkCore": "8.0.10",
@@ -1790,15 +1790,15 @@
         "readme.md"
       ]
     },
-    "Finances-Control-App.Domain/1.6.0": {
-      "sha512": "gBhVz+tWEND60I2PC1SYf/nYun7XZsRX0lWYl6Bch/w8zp5RztgJyrVfT3sj3UlSxUX5Yga81v9Wz0j+C5cR9Q==",
+    "Finances-Control-App.Domain/1.6.3": {
+      "sha512": "5wvZzWr3aHcOlUrzdIhqT9cr9pjrf+rpfBstUx0mKtDefmWoGB5JLCx1hrx7ELKQIEgFIyrZVrjp8iDNJi3JoA==",
       "type": "package",
-      "path": "finances-control-app.domain/1.6.0",
+      "path": "finances-control-app.domain/1.6.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "6811816.png",
-        "finances-control-app.domain.1.6.0.nupkg.sha512",
+        "finances-control-app.domain.1.6.3.nupkg.sha512",
         "finances-control-app.domain.nuspec",
         "lib/net8.0/Finances-Control-App.Domain.dll",
         "lib/net8.0/Finances-Control-App.Domain.runtimeconfig.json"

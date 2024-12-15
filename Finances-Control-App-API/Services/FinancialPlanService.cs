@@ -43,7 +43,7 @@ namespace Finances_Control_App_API.Services
         }
 
 
-        public async Task<List<FinancialPlanLogsResponse>> GetFinancialPlanLogs(int financialPlanId)
+        public async Task<dynamic> GetFinancialPlanLogs(int financialPlanId)
         {
             var listCategoryPriorityIds = _financialPlanCategoryRepository.Table
                 .Where(x => x.FinancialPlanId == financialPlanId && x.PlanCategoryType == FinancialPlanCategoryType.Priority)
@@ -62,33 +62,43 @@ namespace Finances_Control_App_API.Services
             var financialPlanStartDate = _financialPlanRepository.Table.Where(x => x.FinancialPlanId == financialPlanId)
                 .Select(x => x.StartDate)
                 .FirstOrDefault();
-            
+
             var query = (from t in _transferRepository.Table
-                        join u in _userRepository.Table on t.UserId equals u.UserId
-                        join fp in _financialPlanRepository.Table on u.UserId equals fp.UserId
-                        join a in _accountRepository.Table on t.AccountId equals a.AccountId
-                        join c in _categoryRepository.Table on t.CategoryId equals c.CategoryId
+                         join u in _userRepository.Table on t.UserId equals u.UserId
+                         join fp in _financialPlanRepository.Table on u.UserId equals fp.UserId
+                         join a in _accountRepository.Table on t.AccountId equals a.AccountId
+                         join c in _categoryRepository.Table on t.CategoryId equals c.CategoryId
                          where t.UserId == _userId && fp.FinancialPlanId == financialPlanId && t.TransferDate >= fp.StartDate && t.TransferDate < nextMonday && financialPlanAccoutIdList.Contains(a.AccountId)
                          select new FinancialPlanLogsResponse
                          {
-                            FinancialPlanId = fp.FinancialPlanId,
-                            TransferId = t.TransferId,
-                            UserId = _userId,
-                            AccountId = t.AccountId,
-                            FinancialPlanName = fp.FinancialPlanName,
-                            TransferDescription = t.TransferDescription,
-                            TransferAmount = t.TransferAmount,
-                            TransferDate = t.TransferDate,
-                            PlanStartDate = fp.StartDate,
-                            AccountFlagId = a.AccountFlagId,
-                            CategoryId = c.CategoryId,
-                            CategoryName = c.CategoryName,
-                            CategoryType = listCategoryPriorityIds.Contains(t.CategoryId) ? FinancialPlanCategoryType.Priority : FinancialPlanCategoryType.Personal
+                             FinancialPlanId = fp.FinancialPlanId,
+                             TransferId = t.TransferId,
+                             UserId = _userId,
+                             AccountId = t.AccountId,
+                             FinancialPlanName = fp.FinancialPlanName,
+                             TransferDescription = t.TransferDescription,
+                             TransferAmount = t.TransferAmount,
+                             TransferDate = t.TransferDate,
+                             PlanStartDate = fp.StartDate,
+                             AccountFlagId = a.AccountFlagId,
+                             CategoryId = c.CategoryId,
+                             CategoryName = c.CategoryName,
+                             CategoryType = listCategoryPriorityIds.Contains(t.CategoryId) ? FinancialPlanCategoryType.Priority : FinancialPlanCategoryType.Personal,
+                             DayOfWeek = (int)t.TransferDate.DayOfWeek,
 
-                         });
-
-
-            return [.. query];
+                         }).AsEnumerable()
+                         .GroupBy(x => x.DayOfWeek)
+                         .Select(g => new
+                         {
+                             DayOfWeek = g.Key,
+                             TransfersCount = g.Count(),
+                             TransfersAmount = g.Sum(x => x.TransferAmount),
+                             Transfers = g.ToList()
+                         })
+                         .ToList();
+                         
+            
+            return query;
         }
     }
 }

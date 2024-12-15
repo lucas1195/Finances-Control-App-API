@@ -17,7 +17,7 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetFinancialPlanLogs")]
-        public async Task<List<FinancialPlanLogsResponse>> GetFinancialPlanLogs([FromQuery] int idFinancialPlan)
+        public async Task<dynamic> GetFinancialPlanLogs([FromQuery] int idFinancialPlan)
         {
             return await _financialPlanService.GetFinancialPlanLogs(idFinancialPlan);
         }
