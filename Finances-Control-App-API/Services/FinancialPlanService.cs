@@ -56,19 +56,22 @@ namespace Finances_Control_App_API.Services
                 .ToList();
 
             var today = DateTime.Now;
-            var daysUntilNextMonday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
-            var nextMonday = today.AddDays(daysUntilNextMonday);
-
-            var financialPlanStartDate = _financialPlanRepository.Table.Where(x => x.FinancialPlanId == financialPlanId)
-                .Select(x => x.StartDate)
-                .FirstOrDefault();
+            var daysUntilNextSunday = ((int)DayOfWeek.Sunday - (int)today.DayOfWeek + 7) % 7;
+            var nextSunday = today.AddDays(daysUntilNextSunday);
+            var daysUntilThisSunday = DayOfWeek.Sunday - today.DayOfWeek;
+            var thisWeekSunday = today.AddDays(daysUntilThisSunday);
 
             var query = (from t in _transferRepository.Table
                          join u in _userRepository.Table on t.UserId equals u.UserId
                          join fp in _financialPlanRepository.Table on u.UserId equals fp.UserId
                          join a in _accountRepository.Table on t.AccountId equals a.AccountId
                          join c in _categoryRepository.Table on t.CategoryId equals c.CategoryId
-                         where t.UserId == _userId && fp.FinancialPlanId == financialPlanId && t.TransferDate >= fp.StartDate && t.TransferDate < nextMonday && financialPlanAccoutIdList.Contains(a.AccountId)
+                         where t.UserId == _userId && 
+                         fp.FinancialPlanId == financialPlanId && 
+                         t.TransferDate >= fp.StartDate && 
+                         t.TransferDate < nextSunday && 
+                         financialPlanAccoutIdList.Contains(a.AccountId)
+                         
                          select new FinancialPlanLogsResponse
                          {
                              FinancialPlanId = fp.FinancialPlanId,
@@ -93,12 +96,73 @@ namespace Finances_Control_App_API.Services
                              DayOfWeek = g.Key,
                              TransfersCount = g.Count(),
                              TransfersAmount = g.Sum(x => x.TransferAmount),
+                             PrioritySpent = g.Where(x => listCategoryPriorityIds.Contains(x.CategoryId)).Sum(x => x.TransferAmount),
+                             PersonalSpent = g.Where(x => !listCategoryPriorityIds.Contains(x.CategoryId)).Sum(x => x.TransferAmount),
                              Transfers = g.ToList()
                          })
                          .ToList();
                          
             
             return query;
+        }
+
+        public async Task<dynamic> GetWeeklyFinancialPlanLogs(int financialPlanId)
+        {
+
+            var listCategoryPriorityIds = _financialPlanCategoryRepository.Table
+                 .Where(x => x.FinancialPlanId == financialPlanId && x.PlanCategoryType == FinancialPlanCategoryType.Priority)
+                 .Select(x => x.CategoryId)
+                 .ToList();
+
+            var financialPlanAccoutIdList = _financialPlanAccountRepository.Table
+                .Where(x => x.UserId == _userId && x.FinancialPlanId == financialPlanId)
+                .Select(x => x.AccountId)
+                .ToList();
+
+
+            var financialPlan = _financialPlanRepository.Table
+                .Where(x => x.FinancialPlanId == financialPlanId)
+                .FirstOrDefault();
+
+            if (financialPlan == null) {
+
+                throw new Exception($"The Financial Plan with ID: {financialPlanId} was not found.");
+            }
+
+            var query = (from t in _transferRepository.Table
+                        join a in _accountRepository.Table on t.AccountId equals a.AccountId
+                        where t.TransferDate >= financialPlan.StartDate && financialPlanAccoutIdList.Contains(a.AccountId)
+                        select new
+                        {
+                            Day = t.TransferDate.Date,
+                            t.TransferAmount,
+                            t.CategoryId
+
+                        }).AsEnumerable()
+                        .GroupBy(x => x.Day.Date)
+                        .Select(g => new
+                        {
+                            Date = g.Key,
+                            PrioritySpent = g.Where(x => listCategoryPriorityIds.Contains(x.CategoryId)).Sum(x => x.TransferAmount),
+                            PersonalSpent = g.Where(x => !listCategoryPriorityIds.Contains(x.CategoryId)).Sum(x => x.TransferAmount)
+                        })
+                        .ToList();
+            
+            
+            var groupedByWeek = query.GroupBy(x => x.Date.AddDays(-(int)x.Date.DayOfWeek))
+                .Select(g => new
+                {
+                    WeekStartDate = g.Key,
+                    DailyData = g.Select(d => new
+                    {
+                        Date = d.Date,
+                        PrioritySpent = d.PrioritySpent,
+                        PersonalSpent = d.PersonalSpent
+                    }).OrderBy(x => x.Date).ToList()
+                })
+                .ToList();
+
+            return groupedByWeek;
         }
     }
 }

@@ -17,9 +17,15 @@ namespace Finances_Control_App_API.Controllers
         }
 
         [HttpGet("GetFinancialPlanLogs")]
-        public async Task<dynamic> GetFinancialPlanLogs([FromQuery] int idFinancialPlan)
+        public async Task<dynamic> GetFinancialPlanLogs([FromQuery] int financialPlanId)
         {
-            return await _financialPlanService.GetFinancialPlanLogs(idFinancialPlan);
+            return await _financialPlanService.GetFinancialPlanLogs(financialPlanId);
+        }
+
+        [HttpGet("GetWeeklyFinancialPlanLogs")]
+        public async Task<dynamic> GetWeeklyFinancialPlanLogs([FromQuery] int financialPlanId)
+        {
+            return await _financialPlanService.GetWeeklyFinancialPlanLogs(financialPlanId);
         }
     }
 }
